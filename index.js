@@ -250,8 +250,8 @@ function sessionExists() {
 async function checkEnvSession() {
     const envSessionID = process.env.SESSION_ID;
     if (envSessionID) {
-        if (!envSessionID.includes("JUNE-MD:~")) { 
-            log("🚨 WARNING: Environment SESSION_ID is missing the required prefix 'JUNE-MD:~'. Assuming BASE64 format.", 'red'); 
+        if (!envSessionID.includes("Ultra-X:~")) { 
+            log("🚨 WARNING: Environment SESSION_ID is missing the required prefix 'Ultra-X:~'. Assuming BASE64 format.", 'red'); 
         }
         global.SESSION_ID = envSessionID.trim();
         return true;
@@ -267,9 +267,9 @@ async function checkAndHandleSessionFormat() {
     
     if (sessionId && sessionId.trim() !== '') {
         // Only check if it's set and non-empty
-        if (!sessionId.trim().startsWith('JUNE-MD')) {
+        if (!sessionId.trim().startsWith('Ultra-X')) {
             log(chalk.white.bgRed('[ERROR]: Invalid SESSION_ID in .env'), 'white');
-            log(chalk.white.bgRed('[SESSION ID] MUST start with "JUNE-MD".'), 'white');
+            log(chalk.white.bgRed('[SESSION ID] MUST start with "Ultra-X".'), 'white');
             log(chalk.white.bgRed('Cleaning .env and creating new one...'), 'white');
             
          try {
@@ -337,8 +337,8 @@ async function getLoginMethod() {
         let sessionId = await question(chalk.bgBlack(chalk.greenBright(`Paste your Session ID here: `)));
         sessionId = sessionId.trim();
         // Pre-check the format during interactive entry as well
-        if (!sessionId.includes("JUNE-MD:~")) { 
-            log("Invalid Session ID format! Must contain 'JUNE-MD:~'.", 'red'); 
+        if (!sessionId.includes("Ultra-X:~")) { 
+            log("Invalid Session ID format! Must contain 'Ultra-X:~'.", 'red'); 
             process.exit(1); 
         }
         global.SESSION_ID = sessionId;
@@ -356,7 +356,7 @@ async function downloadSessionData() {
         await fs.promises.mkdir(sessionDir, { recursive: true });
         if (!fs.existsSync(credsPath) && global.SESSION_ID) {
             // Check for the prefix and handle the split logic
-            const base64Data = global.SESSION_ID.includes("JUNE-MD:~") ? global.SESSION_ID.split("JUNE-MD:~")[1] : global.SESSION_ID;
+            const base64Data = global.SESSION_ID.includes("Ultra-X:~") ? global.SESSION_ID.split("Ultra-X:~")[1] : global.SESSION_ID;
             const sessionData = Buffer.from(base64Data, 'base64');
             await fs.promises.writeFile(credsPath, sessionData);
             log(`Session successfully saved.`, 'green');
@@ -789,7 +789,7 @@ async function tylor() {
     // 4. *** IMPLEMENT USER'S PRIORITY LOGIC: Check .env SESSION_ID FIRST ***
     const envSessionID = process.env.SESSION_ID?.trim();
 
-    if (envSessionID && envSessionID.startsWith('JUNE-MD')) { 
+    if (envSessionID && envSessionID.startsWith('Ultra-X')) { 
         log("Found new SESSION_ID in environment variable.", 'magenta');
         
         // 4a. Force the use of the new session by cleaning any old persistent files.
